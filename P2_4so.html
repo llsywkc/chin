@@ -128,7 +128,6 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
     <button class="btn pink" onclick="pickStudent()">🎲 抽選學生</button>
   </div>
   <div class="levels" id="levels"></div>
-  <p style="text-align:center;font-weight:bold;font-size:clamp(15px,1.8vw,20px);margin-top:20px">玩法：先全班想答案，聽到老師說「亮牌」才一起舉 A／B／C／D／E 牌，再抽學生上前點選。快捷鍵：A 至 E 選答案（是非題 A＝對、B＝錯），空白鍵進入下一題。關卡 7 需要把六張情境圖和這個檔案放在同一個資料夾。</p>
 </div>
 
 <div id="game" class="card hide">
@@ -378,7 +377,6 @@ function renderQ(){
  $('qarea').innerHTML=h;
 }
 
-/* ---- 熱身 1：四素快閃 ---- */
 function drawSort(){
  const tk=st.tk;const cur=st.seq[st.pos];
  let h=`<div class="qtext" style="text-align:center">閃動的一塊是哪一項？想好才舉牌！</div><div class="sent" style="font-size:clamp(24px,4vw,52px)">`;
@@ -409,7 +407,6 @@ function finishSort(){
  good('句式：時間，人物地點事情。');
 }
 
-/* ---- 重組 / 排四素卡 ---- */
 function drawOrd(){
  const tk=st.tk;const col=st.q.colored;
  let h=`<div class="qtext">${col?'把顏色卡、逗號和句號排好，砌成一句通順的句子。':'把詞語、形容詞、逗號和句號排好，砌成一句通順的句子。'}</div><div style="text-align:center"><button class="btn gray" onclick="toggleHint()">💡 ${st.hint?'隱藏':'顯示'}四素提示</button></div><div class="slotrow">`;
@@ -450,7 +447,6 @@ function checkOrd(){
  }else{st.wrong=w;drawOrd();bad();}
 }
 
-/* ---- 關卡 7：看圖一步一步砌句子 ---- */
 function wcard(k,txt,extra){return `<span class="wc ${extra||''}" style="border-color:${COL[k]};background:${TINT[k]};color:${COL[k]}">${txt}</span>`;}
 function ctext(q){return [q.tm,q.pr,q.pl.join(''),q.ev.join('')];}
 function picHTML(f){return `<div class="pic"><img src="${f}" alt="情境圖" onerror="this.parentNode.classList.add('miss')"><div class="missmsg">找不到圖片 ${f}。請把六張情境圖和這個檔案放在同一個資料夾，檔名要相同。</div></div>`;}
