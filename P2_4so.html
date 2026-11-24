@@ -379,7 +379,7 @@ function renderQ(){
 
 function drawSort(){
  const tk=st.tk;const cur=st.seq[st.pos];
- let h=`<div class="qtext" style="text-align:center">閃動的一塊是哪一項？想好才舉牌！</div><div class="sent" style="font-size:clamp(24px,4vw,52px)">`;
+ let h=`<div class="qtext" style="text-align:center">閃動的一塊是哪一項？</div><div class="sent" style="font-size:clamp(24px,4vw,52px)">`;
  tk.forEach((t,i)=>{
   const code=t[1];const done=!!st.doneSet[i];
   if(code==='u'){h+=`<span class="pb${done?'':(i===cur?' cur':' dim')}">${t[0]}</span>`;}
