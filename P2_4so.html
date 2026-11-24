@@ -14,6 +14,8 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
 .pattern span.p{border:5px solid #222;border-radius:16px;padding:4px 16px;box-shadow:4px 4px 0 #222;background:#fff}
 .pattern span.p.pu{background:#FFE066;padding:4px 12px}
 .pb{display:inline-block;border:4px solid #222;border-radius:10px;background:#FFE066;padding:0 6px;margin:0 3px;line-height:1.1}
+.pb.cur{animation:pulse 1.4s infinite;background:#FFF3BF;border-style:dashed}
+.pb.dim{opacity:.4;border-style:dashed;background:#fff}
 .c0{color:#E03131}.c1{color:#1C7ED6}.c2{color:#2F9E44}.c3{color:#F76707}
 .btn{font-size:clamp(18px,2.4vw,28px);font-weight:bold;border:5px solid #222;border-radius:18px;padding:10px 20px;background:#FFD166;box-shadow:6px 6px 0 #222;cursor:pointer;transition:transform .08s,box-shadow .08s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #222}
@@ -47,6 +49,11 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
 .opt:nth-child(1){background:#FFADAD}.opt:nth-child(2){background:#FFD6A5}.opt:nth-child(3){background:#CAFFBF}.opt:nth-child(4){background:#9BF6FF}
 .opt.bad{background:#ddd!important;animation:shake .4s;opacity:.55;cursor:not-allowed}
 .opt.good{background:#7AE582!important;animation:pop .5s}
+.catrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:16px}
+.catbtn{display:flex;align-items:center;justify-content:center;gap:10px;font-size:clamp(22px,3vw,36px);font-weight:900;border:6px solid;border-radius:20px;padding:14px 8px;box-shadow:6px 6px 0 #222;cursor:pointer}
+.catbtn .lt2{width:1.5em;height:1.5em;border:4px solid #222;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:.8em;color:#222}
+.catbtn:hover{transform:translate(-2px,-2px)}
+.catbtn.bad{background:#ddd!important;animation:shake .4s;opacity:.5;cursor:not-allowed}
 .slotrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:flex-start;margin:14px 0}
 .oslot{min-width:96px;min-height:76px;border:6px dashed #222;border-radius:18px;background:#FFF9DB;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 10px;font-size:clamp(18px,2.6vw,32px);font-weight:900;cursor:pointer;text-align:center}
 .oslot.ps{min-width:68px;background:#FFF3BF}
@@ -59,7 +66,7 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
 .pool{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:18px 0;min-height:90px}
 .tile{font-size:clamp(20px,3vw,36px);font-weight:900;border:6px solid #222;border-radius:20px;padding:10px 18px;box-shadow:6px 6px 0 #222;cursor:pointer;background:#9BF6FF}
 .tile:nth-child(2n){background:#FFADAD}.tile:nth-child(3n){background:#CAFFBF}.tile:nth-child(5n){background:#FFD6A5}
-.tile.pt{background:#FFE066!important;min-width:76px;text-align:center}
+.tile.pt{background:#FFE066!important;min-width:76px;text-align:center;color:#222!important;border-color:#222!important}
 .tile.ad{background:#B197FC!important}
 .tile.sel{outline:8px solid #222;transform:translateY(-6px) scale(1.06)}
 .tile.dead{background:#ddd!important;opacity:.5;cursor:not-allowed;text-decoration:line-through}
@@ -72,7 +79,7 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
 .pic img{max-width:100%;max-height:300px;border:6px solid #222;border-radius:22px;box-shadow:8px 8px 0 #222;background:#fff}
 .pic .missmsg{display:none;font-size:clamp(16px,2vw,22px);font-weight:bold;border:5px dashed #222;border-radius:18px;padding:30px 16px;background:#FFF9DB}
 .pic.miss img{display:none}.pic.miss .missmsg{display:block}
-.wc{display:inline-block;font-weight:900;border:5px solid;border-radius:16px;padding:2px 12px;margin:4px 3px;font-size:clamp(22px,3.4vw,42px);line-height:1.4;background:#fff}
+.wc{display:inline-block;font-weight:900;border:5px solid #222;border-radius:16px;padding:2px 12px;margin:4px 3px;font-size:clamp(22px,3.4vw,42px);line-height:1.4;background:#fff}
 .wc.cur{border-style:dashed;background:#FFF9DB;animation:pulse 1.4s infinite}
 .wc.dim{opacity:.45;border-style:dashed;background:#fff;color:#555!important;border-color:#999!important}
 .gap{font-size:clamp(22px,3.2vw,38px);font-weight:900;width:1.5em;height:1.5em;border:5px dashed #222;border-radius:50%;background:#FFF3BF;cursor:pointer;margin:0 2px;vertical-align:middle;animation:pulse 1.4s infinite}
@@ -113,12 +120,15 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
     <label>每關題數：
       <select id="cnt"><option value="1">1 題（快速）</option><option value="3" selected>3 題（課堂）</option><option value="5">5 題</option><option value="99">全部</option></select>
     </label>
+    <label>快閃次序：
+      <select id="sortMode"><option value="seq" selected>按次序（較易）</option><option value="rand">隨機次序（較難）</option></select>
+    </label>
     <label>學生人數：<input id="pmax" type="number" min="2" max="60" value="18"></label>
     <button class="btn gray" id="muteBtn">🔊 聲效：開</button>
     <button class="btn pink" onclick="pickStudent()">🎲 抽選學生</button>
   </div>
   <div class="levels" id="levels"></div>
-  <p style="text-align:center;font-weight:bold;font-size:clamp(15px,1.8vw,20px);margin-top:20px">玩法：先全班想答案，聽到老師說「亮牌」才一起舉 A／B／C 牌，再抽學生上前點選。快捷鍵：A／B／C 選答案（是非題 A＝對、B＝錯），空白鍵進入下一題。關卡 7 需要把六張情境圖和這個檔案放在同一個資料夾。</p>
+  <p style="text-align:center;font-weight:bold;font-size:clamp(15px,1.8vw,20px);margin-top:20px">玩法：先全班想答案，聽到老師說「亮牌」才一起舉 A／B／C／D／E 牌，再抽學生上前點選。快捷鍵：A 至 E 選答案（是非題 A＝對、B＝錯），空白鍵進入下一題。關卡 7 需要把六張情境圖和這個檔案放在同一個資料夾。</p>
 </div>
 
 <div id="game" class="card hide">
@@ -153,24 +163,43 @@ h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spaci
 </div>
 
 <script>
-const L=['A','B','C','D'];
-const SCENE_LV=6;
+const L=['A','B','C','D','E'];
 const GC=['#FFADAD','#FFD6A5','#FDFFB6','#CAFFBF','#9BF6FF','#B197FC'];
 const fmt=s=>s.replace(/[，。]/g,m=>'<span class="pb">'+m+'</span>');
 const mc=(s,q,o,a,e)=>({t:'mc',s,q,o,a,e});
 const adjq=(s,o,n)=>({t:'mc',s,q:'哪一個形容詞最合適？',o,a:0,e:o[0]+'的'+n+'最合適，其他詞語不能形容'+n+'。'});
 const pos=(seg,adj,a)=>({t:'pos',seg,adj,a});
-const ord=(str)=>({t:'ord',tk:str.split('|').map(x=>{const i=x.lastIndexOf(':');return [x.slice(0,i),x.slice(i+1)];})});
+const parse=str=>str.split('|').map(x=>{const i=x.lastIndexOf(':');return [x.slice(0,i),x.slice(i+1)];});
+const ord=(str)=>({t:'ord',tk:parse(str)});
+const cards=(str)=>({t:'ord',colored:true,tk:parse(str)});
+const sortq=(str)=>({t:'sort',tk:parse(str)});
 const tf=(s,claim,a,e)=>({t:'tf',s,claim,a,e});
 const scene=o=>Object.assign({t:'scene'},o);
 const CLS={t:'c0',p:'c1',l:'c2',e:'c3'};
 const LAB={t:'時間',p:'人物',l:'地點',e:'事情',a:'形容詞'};
 function labOf(tk){return tk[1]==='u'?(tk[0]==='，'?'逗號':'句號'):LAB[tk[1]];}
 const CATS=[['t','時間','甚麼時候？'],['p','人物','誰？'],['l','地點','在哪裏？'],['e','事情','做甚麼？']];
-const COL={t:'#E03131',p:'#1C7ED6',l:'#2F9E44',e:'#F76707',a:'#7048E8'};
-const TINT={t:'#FFE3E3',p:'#D0EBFF',l:'#D3F9D8',e:'#FFE8CC',a:'#EDE7FF'};
+const COL={t:'#E03131',p:'#1C7ED6',l:'#2F9E44',e:'#F76707',a:'#7048E8',u:'#222222'};
+const TINT={t:'#FFE3E3',p:'#D0EBFF',l:'#D3F9D8',e:'#FFE8CC',a:'#EDE7FF',u:'#FFE066'};
+const SORTOPT=[['t','時間'],['p','人物'],['l','地點'],['e','事情'],['u','標點']];
 
 const LEVELS=[
+{name:'熱身 1：四素快閃',icon:'⚡',color:'#FFE066',desc:'閃動的一塊是時、人、地、事，還是標點？',hint:'想一想：甚麼時候？誰？在哪裏？做甚麼？逗號和句號是標點。',qs:[
+ sortq('星期六:t|，:u|爸爸:p|在公園:l|跑步:e|。:u'),
+ sortq('小息時:t|，:u|同學們:p|在操場:l|玩耍:e|。:u'),
+ sortq('中午:t|，:u|奶奶:p|在廚房:l|做飯:e|。:u'),
+ sortq('晚上:t|，:u|哥哥:p|在房間:l|做功課:e|。:u'),
+ sortq('下午:t|，:u|妹妹:p|在課室:l|畫畫:e|。:u'),
+ sortq('早上:t|，:u|老師:p|在禮堂:l|唱歌:e|。:u')
+]},
+{name:'熱身 2：排四素卡',icon:'🎴',color:'#FFC9DE',desc:'把顏色卡、逗號和句號排好',hint:'想一想：時間，人物地點事情。記得放逗號和句號。',qs:[
+ cards('星期日:t|，:u|姐姐:p|在家裏:l|看書:e|。:u'),
+ cards('下午:t|，:u|同學們:p|在禮堂:l|看表演:e|。:u'),
+ cards('中午:t|，:u|爸爸:p|在餐廳:l|吃飯:e|。:u'),
+ cards('放學後:t|，:u|弟弟:p|在公園:l|玩滑梯:e|。:u'),
+ cards('早上:t|，:u|媽媽:p|在街市:l|買菜:e|。:u'),
+ cards('晚上:t|，:u|爺爺:p|在客廳:l|看新聞:e|。:u')
+]},
 {name:'關卡 1：四素偵探',icon:'🔍',color:'#FFADAD',desc:'找出時間、人物、地點、事情',hint:'想一想：甚麼時候？誰？在哪裏？做甚麼？',qs:[
  mc('放學後，小明在家裏玩積木。','哪一部分是時間？',['放學後','小明','在家裏'],0,'放學後回答甚麼時候，所以是時間。'),
  mc('中午，媽媽在廚房煮飯。','哪一部分是人物？',['中午','媽媽','煮飯'],1,'媽媽回答誰，所以是人物。'),
@@ -252,6 +281,7 @@ const LEVELS=[
  scene({img:'group6_mom_fruit.png',tm:'星期日',pr:'媽媽',pl:['在','超級市場'],ev:['買了一袋','水果'],ap:'溫柔的',al:'明亮的',ae:'新鮮的',dis:'吵鬧的'})
 ]}
 ];
+const SCENE_LV=LEVELS.findIndex(l=>l.picker);
 
 let AC=null,muted=false;
 function ac(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();}if(AC.state==='suspended')AC.resume();return AC;}
@@ -332,6 +362,11 @@ function renderQ(){
   while(p.every((v,i)=>v===i))p=shuffle(p);
   st.tk=q.tk;st.pool=p;st.slots=q.tk.map(()=>null);st.hint=false;st.wrong=[];
   drawOrd();return;
+ }else if(q.t==='sort'){
+  st.tk=q.tk;
+  st.seq=$('sortMode').value==='rand'?shuffle(q.tk.map((_,i)=>i)):q.tk.map((_,i)=>i);
+  st.pos=0;st.doneSet={};st.badBtns=[];
+  drawSort();return;
  }else if(q.t==='scene'){
   st.step=0;st.fill=0;
   st.pool=shuffle([0,1,2,3]);while(st.pool.every((v,i)=>v===i))st.pool=shuffle(st.pool);
@@ -342,16 +377,53 @@ function renderQ(){
  }
  $('qarea').innerHTML=h;
 }
+
+/* ---- 熱身 1：四素快閃 ---- */
+function drawSort(){
+ const tk=st.tk;const cur=st.seq[st.pos];
+ let h=`<div class="qtext" style="text-align:center">閃動的一塊是哪一項？想好才舉牌！</div><div class="sent" style="font-size:clamp(24px,4vw,52px)">`;
+ tk.forEach((t,i)=>{
+  const code=t[1];const done=!!st.doneSet[i];
+  if(code==='u'){h+=`<span class="pb${done?'':(i===cur?' cur':' dim')}">${t[0]}</span>`;}
+  else if(done){h+=wcard(code,t[0]);}
+  else{h+=`<span class="wc ${i===cur?'cur':'dim'}">${t[0]}</span>`;}
+ });
+ h+='</div><div class="catrow">';
+ SORTOPT.forEach((o,k)=>{h+=`<button class="catbtn${st.badBtns.indexOf(k)>=0?' bad':''}" style="border-color:${COL[o[0]]};background:${TINT[o[0]]};color:${o[0]==='u'?'#222':COL[o[0]]}" onclick="pickSort(${k})"><span class="lt2">${L[k]}</span>${o[1]}</button>`;});
+ h+='</div>';
+ $('qarea').innerHTML=h;
+}
+function pickSort(k){
+ if(st.done||st.q.t!=='sort')return;
+ const cur=st.seq[st.pos];
+ if(SORTOPT[k][0]===st.tk[cur][1]){
+  st.doneSet[cur]=true;st.pos++;st.badBtns=[];$('fb').className='fb';
+  if(st.pos>=st.tk.length){finishSort();}else{sfx.ding();drawSort();}
+ }else{
+  st.badBtns.push(k);bad();drawSort();
+ }
+}
+function finishSort(){
+ const full=st.tk.map(t=>t[1]==='u'?`<span class="pb">${t[0]}</span>`:wcard(t[1],t[0])).join('');
+ $('qarea').innerHTML=`<div class="qtext" style="text-align:center">全部分類好了！</div><div class="sent" style="font-size:clamp(24px,4vw,52px)">${full}</div>`;
+ good('句式：時間，人物地點事情。');
+}
+
+/* ---- 重組 / 排四素卡 ---- */
 function drawOrd(){
- const tk=st.tk;
- let h=`<div class="qtext">把詞語、形容詞、逗號和句號排好，砌成一句通順的句子。</div><div style="text-align:center"><button class="btn gray" onclick="toggleHint()">💡 ${st.hint?'隱藏':'顯示'}四素提示</button></div><div class="slotrow">`;
+ const tk=st.tk;const col=st.q.colored;
+ let h=`<div class="qtext">${col?'把顏色卡、逗號和句號排好，砌成一句通順的句子。':'把詞語、形容詞、逗號和句號排好，砌成一句通順的句子。'}</div><div style="text-align:center"><button class="btn gray" onclick="toggleHint()">💡 ${st.hint?'隱藏':'顯示'}四素提示</button></div><div class="slotrow">`;
  for(let i=0;i<tk.length;i++){
   const v=st.slots[i];const c=tk[i][1];
   const cls='oslot'+(c==='u'?' ps':'')+(c==='a'?' as':'')+(v!==null?' f':'')+(st.wrong.indexOf(i)>=0?' bad':'');
   h+=`<div class="${cls}" onclick="unplace(${i})">${v!==null?tk[v][0]:(st.hint?labOf(tk[i]):(i+1))}${(v!==null&&st.hint)?'<small>'+labOf(tk[i])+'</small>':''}</div>`;
  }
  h+='</div><div class="pool">';
- st.pool.forEach((v,j)=>{const c=tk[v][1];h+=`<div class="tile${c==='u'?' pt':c==='a'?' ad':''}" onclick="place(${j})">${tk[v][0]}</div>`;});
+ st.pool.forEach((v,j)=>{
+  const c=tk[v][1];
+  const sty=(col&&c!=='u'&&c!=='a')?` style="border-color:${COL[c]};background:${TINT[c]};color:${COL[c]}"`:'';
+  h+=`<div class="tile${c==='u'?' pt':c==='a'?' ad':''}"${sty} onclick="place(${j})">${tk[v][0]}</div>`;
+ });
  h+='</div>';
  $('qarea').innerHTML=h;
 }
@@ -374,7 +446,7 @@ function checkOrd(){
   st.done=true;
   const full=st.tk.map(t=>t[1]==='u'?`<span class="pb">${t[0]}</span>`:t[1]==='a'?`<span class="hl">${t[0]}</span>`:`<span class="${CLS[t[1]]}">${t[0]}</span>`).join('');
   $('qarea').innerHTML=`<div class="qtext">完成了！</div><div class="sent">${full}</div>`;
-  good('次序是：時間，人物地點事情。形容詞放在它形容的名詞前面。');
+  good('次序是：時間，人物地點事情。'+(st.tk.some(t=>t[1]==='a')?'形容詞放在它形容的名詞前面。':''));
  }else{st.wrong=w;drawOrd();bad();}
 }
 
@@ -526,12 +598,13 @@ document.addEventListener('keydown',e=>{
  if($('game').classList.contains('hide')||!st)return;
  const k=e.key.toLowerCase();
  if((k===' '||k==='enter')&&!$('nextBtn').classList.contains('hide')){e.preventDefault();nextQ();return;}
- const m={a:0,b:1,c:2,d:3}[k];
+ const m={a:0,b:1,c:2,d:3,e:4}[k];
  if(m===undefined)return;
  const t=st.q.t;
  if(t==='mc'){if(m<st.q.o.length)pickMC(m);}
  else if(t==='pos'){if(m<st.q.seg.length-1)pickPos(m);}
  else if(t==='tf'){if(m<2)pickTF(m);}
+ else if(t==='sort'){if(m<5)pickSort(m);}
 });
 buildLevels();
 </script>
