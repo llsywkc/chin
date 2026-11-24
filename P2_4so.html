@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>超級四素句</title>
+<style>
+*{box-sizing:border-box;font-family:"Microsoft JhengHei","PingFang HK","Noto Sans TC",sans-serif}
+body{margin:0;min-height:100vh;color:#222;background:#FFF3B0;background-image:radial-gradient(#FFD166 3px,transparent 3px),radial-gradient(#8ADFD0 3px,transparent 3px);background-size:48px 48px;background-position:0 0,24px 24px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.card{background:#fff;border:6px solid #222;border-radius:28px;box-shadow:10px 10px 0 #222;padding:22px}
+h1{font-size:clamp(38px,7vw,76px);margin:0 0 14px;text-align:center;letter-spacing:4px;color:#FF4D6D;text-shadow:4px 4px 0 #222;-webkit-text-stroke:2px #222}
+.pattern{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:0 0 18px;font-size:clamp(18px,2.6vw,30px);font-weight:900}
+.pattern span.p{border:5px solid #222;border-radius:16px;padding:4px 16px;box-shadow:4px 4px 0 #222;background:#fff}
+.pattern span.p.pu{background:#FFE066;padding:4px 12px}
+.pb{display:inline-block;border:4px solid #222;border-radius:10px;background:#FFE066;padding:0 6px;margin:0 3px;line-height:1.1}
+.c0{color:#E03131}.c1{color:#1C7ED6}.c2{color:#2F9E44}.c3{color:#F76707}
+.btn{font-size:clamp(18px,2.4vw,28px);font-weight:bold;border:5px solid #222;border-radius:18px;padding:10px 20px;background:#FFD166;box-shadow:6px 6px 0 #222;cursor:pointer;transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #222}
+.btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 #222}
+.btn.green{background:#7AE582}.btn.blue{background:#74C0FC}.btn.pink{background:#FFA6C9}.btn.gray{background:#E9ECEF}
+.settings{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center;margin-bottom:20px;font-size:clamp(16px,2vw,22px);font-weight:bold}
+.settings select,.settings input{font-size:inherit;border:4px solid #222;border-radius:12px;padding:4px 8px;background:#fff;width:auto}
+.settings input{width:80px}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.lv{border:6px solid #222;border-radius:24px;padding:18px;box-shadow:8px 8px 0 #222;cursor:pointer;text-align:center;transition:transform .1s}
+.lv:hover{transform:translate(-3px,-3px) rotate(-1deg)}
+.lv .ic{font-size:60px}.lv .nm{font-size:clamp(22px,2.6vw,30px);font-weight:900;margin:6px 0}.lv .ds{font-size:clamp(16px,1.8vw,20px);font-weight:bold}
+.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.top .btn{padding:6px 14px;font-size:clamp(16px,2vw,22px)}
+.lvname{font-size:clamp(20px,3vw,32px);font-weight:900;border:5px solid #222;border-radius:16px;padding:6px 16px;box-shadow:5px 5px 0 #222}
+.dots{display:flex;gap:8px;justify-content:center;margin:6px 0 14px;flex-wrap:wrap}
+.dot{width:26px;height:26px;border:4px solid #222;border-radius:50%;background:#fff}
+.dot.now{background:#FFD166;transform:scale(1.25)}.dot.ok{background:#7AE582}.dot.no{background:#FF8FA3}
+.qno{display:inline-block;border:4px solid #222;border-radius:14px;padding:2px 14px;font-weight:900;font-size:clamp(18px,2.4vw,26px);background:#FFD166;box-shadow:4px 4px 0 #222}
+.qtext{font-size:clamp(24px,3.6vw,42px);font-weight:900;margin:14px 0;line-height:1.5}
+.sent{font-size:clamp(28px,4.6vw,56px);font-weight:900;line-height:1.8;border:5px dashed #222;border-radius:20px;padding:14px 18px;background:#FFF9DB;margin:12px 0;text-align:center}
+.adjpill{display:inline-block;font-size:clamp(22px,3.2vw,36px);font-weight:900;border:5px solid #222;border-radius:30px;padding:6px 22px;background:#B197FC;box-shadow:5px 5px 0 #222;margin:8px 0}
+.slot{font-size:clamp(22px,3.4vw,40px);font-weight:900;width:1.6em;height:1.6em;border:5px solid #222;border-radius:50%;background:#FFD166;margin:0 6px;cursor:pointer;box-shadow:4px 4px 0 #222;vertical-align:middle;animation:pulse 1.4s infinite}
+.slot:hover{background:#74C0FC}
+.slot.bad{background:#FF8FA3;animation:shake .4s;opacity:.6;cursor:not-allowed}
+.hl{background:#B197FC;border:4px solid #222;border-radius:12px;padding:0 8px;margin:0 3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:14px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;font-size:clamp(22px,3.2vw,38px);font-weight:900;border:6px solid #222;border-radius:22px;padding:14px 18px;box-shadow:7px 7px 0 #222;cursor:pointer;transition:transform .08s}
+.opt:hover{transform:translate(-2px,-2px)}
+.opt .lt{flex:none;width:1.6em;height:1.6em;border:5px solid #222;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+.opt:nth-child(1){background:#FFADAD}.opt:nth-child(2){background:#FFD6A5}.opt:nth-child(3){background:#CAFFBF}.opt:nth-child(4){background:#9BF6FF}
+.opt.bad{background:#ddd!important;animation:shake .4s;opacity:.55;cursor:not-allowed}
+.opt.good{background:#7AE582!important;animation:pop .5s}
+.slotrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:flex-start;margin:14px 0}
+.oslot{min-width:96px;min-height:76px;border:6px dashed #222;border-radius:18px;background:#FFF9DB;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 10px;font-size:clamp(18px,2.6vw,32px);font-weight:900;cursor:pointer;text-align:center}
+.oslot.ps{min-width:68px;background:#FFF3BF}
+.oslot.as{background:#EDE7FF}
+.oslot small{font-size:.5em;color:#666}
+.oslot.f{border-style:solid;background:#FFD166;box-shadow:5px 5px 0 #222}
+.oslot.ps.f{background:#FFE066}
+.oslot.as.f{background:#B197FC}
+.oslot.bad{background:#FF8FA3!important;animation:shake .4s}
+.pool{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:18px 0;min-height:90px}
+.tile{font-size:clamp(20px,3vw,36px);font-weight:900;border:6px solid #222;border-radius:20px;padding:10px 18px;box-shadow:6px 6px 0 #222;cursor:pointer;background:#9BF6FF}
+.tile:nth-child(2n){background:#FFADAD}.tile:nth-child(3n){background:#CAFFBF}.tile:nth-child(5n){background:#FFD6A5}
+.tile.pt{background:#FFE066!important;min-width:76px;text-align:center}
+.tile.ad{background:#B197FC!important}
+.tile.sel{outline:8px solid #222;transform:translateY(-6px) scale(1.06)}
+.tile.dead{background:#ddd!important;opacity:.5;cursor:not-allowed;text-decoration:line-through}
+.tile.wrongt{background:#FF8FA3!important;animation:shake .4s}
+.tile:hover{transform:translate(-2px,-2px)}
+.steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 12px}
+.stp{border:4px solid #222;border-radius:14px;padding:3px 14px;font-weight:900;font-size:clamp(15px,2vw,22px);background:#fff;opacity:.55}
+.stp.on{background:#FFD166;opacity:1;transform:scale(1.08)}.stp.dn{background:#B9FBC0;opacity:1}
+.pic{text-align:center;margin:8px 0}
+.pic img{max-width:100%;max-height:300px;border:6px solid #222;border-radius:22px;box-shadow:8px 8px 0 #222;background:#fff}
+.pic .missmsg{display:none;font-size:clamp(16px,2vw,22px);font-weight:bold;border:5px dashed #222;border-radius:18px;padding:30px 16px;background:#FFF9DB}
+.pic.miss img{display:none}.pic.miss .missmsg{display:block}
+.wc{display:inline-block;font-weight:900;border:5px solid;border-radius:16px;padding:2px 12px;margin:4px 3px;font-size:clamp(22px,3.4vw,42px);line-height:1.4;background:#fff}
+.wc.cur{border-style:dashed;background:#FFF9DB;animation:pulse 1.4s infinite}
+.wc.dim{opacity:.45;border-style:dashed;background:#fff;color:#555!important;border-color:#999!important}
+.gap{font-size:clamp(22px,3.2vw,38px);font-weight:900;width:1.5em;height:1.5em;border:5px dashed #222;border-radius:50%;background:#FFF3BF;cursor:pointer;margin:0 2px;vertical-align:middle;animation:pulse 1.4s infinite}
+.gap.bad{background:#FF8FA3;animation:shake .4s;opacity:.5;cursor:not-allowed}
+.aslot{font-size:clamp(22px,3.2vw,38px);font-weight:900;min-width:1.6em;height:1.5em;border:5px dashed #7048E8;border-radius:14px;background:#EDE7FF;cursor:pointer;margin:0 3px;vertical-align:middle;animation:pulse 1.4s infinite;color:#7048E8}
+.aslot.bad{background:#FF8FA3;animation:shake .4s}
+.gpicks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin:10px 0 20px}
+.gpick{border:6px solid #222;border-radius:22px;box-shadow:7px 7px 0 #222;padding:10px;text-align:center;cursor:pointer;transition:transform .1s}
+.gpick:hover{transform:translate(-3px,-3px) rotate(-1deg)}
+.gpick img{width:100%;height:130px;object-fit:cover;border:4px solid #222;border-radius:14px;background:#fff}
+.gpick .gn{font-size:clamp(22px,2.8vw,32px);font-weight:900;margin-top:6px}
+.fb{margin-top:18px;border:6px solid #222;border-radius:22px;padding:14px 18px;font-size:clamp(20px,2.8vw,32px);font-weight:900;display:none;box-shadow:6px 6px 0 #222}
+.fb.ok{display:block;background:#B9FBC0}.fb.no{display:block;background:#FFC9DE}
+.fb small{display:block;font-size:.72em;margin-top:6px;font-weight:bold}
+.nextrow{text-align:center;margin-top:16px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50}
+.overlay.on{display:flex}
+.pick{background:#fff;border:8px solid #222;border-radius:32px;box-shadow:12px 12px 0 #222;padding:30px 60px;text-align:center}
+.pick .num{font-size:clamp(90px,16vw,200px);font-weight:900;color:#FF4D6D;-webkit-text-stroke:4px #222;line-height:1}
+.stars{font-size:clamp(50px,9vw,100px)}
+.end{text-align:center}
+.end .big{font-size:clamp(28px,5vw,56px);font-weight:900;margin:10px 0}
+.fall{position:fixed;top:-60px;font-size:36px;z-index:60;pointer-events:none;animation:fall 3s linear forwards}
+.hide{display:none!important}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="home" class="card">
+  <h1>超級四素句</h1>
+  <div class="pattern"><span class="p c0">時間</span><span class="p pu">，</span><span class="p c1">人物</span><span class="p c2">地點</span><span class="p c3">事情</span><span class="p pu">。</span></div>
+  <div class="settings">
+    <label>每關題數：
+      <select id="cnt"><option value="1">1 題（快速）</option><option value="3" selected>3 題（課堂）</option><option value="5">5 題</option><option value="99">全部</option></select>
+    </label>
+    <label>學生人數：<input id="pmax" type="number" min="2" max="60" value="18"></label>
+    <button class="btn gray" id="muteBtn">🔊 聲效：開</button>
+    <button class="btn pink" onclick="pickStudent()">🎲 抽選學生</button>
+  </div>
+  <div class="levels" id="levels"></div>
+  <p style="text-align:center;font-weight:bold;font-size:clamp(15px,1.8vw,20px);margin-top:20px">玩法：先全班想答案，聽到老師說「亮牌」才一起舉 A／B／C 牌，再抽學生上前點選。快捷鍵：A／B／C 選答案（是非題 A＝對、B＝錯），空白鍵進入下一題。關卡 7 需要把六張情境圖和這個檔案放在同一個資料夾。</p>
+</div>
+
+<div id="game" class="card hide">
+  <div class="top">
+    <div class="lvname" id="lvname"></div>
+    <div>
+      <button class="btn green hide" id="switchBtn" onclick="showScenePicker()">🔀 換組別</button>
+      <button class="btn pink" onclick="pickStudent()">🎲 抽選學生</button>
+      <button class="btn gray" id="muteBtn2">🔊</button>
+      <button class="btn blue" onclick="goHome()">🏠 關卡</button>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div><span class="qno" id="qno"></span></div>
+  <div id="qarea"></div>
+  <div class="fb" id="fb"></div>
+  <div class="nextrow"><button class="btn green hide" id="nextBtn" onclick="nextQ()">下一題 ➜</button></div>
+</div>
+
+<div id="end" class="card end hide">
+  <div class="stars" id="stars"></div>
+  <div class="big" id="endtxt"></div>
+  <div class="big" id="endscore"></div>
+  <button class="btn green" onclick="startLevel(curLv)">🔁 再玩一次</button>
+  <button class="btn blue" onclick="goHome()">🏠 回到關卡</button>
+</div>
+
+</div>
+
+<div class="overlay" id="pickov" onclick="closePick()">
+  <div class="pick"><div style="font-size:clamp(22px,3vw,36px);font-weight:900">請這位同學上前挑戰！</div><div class="num" id="picknum">?</div><div style="font-weight:bold;margin-top:10px">（點擊任何位置關閉）</div></div>
+</div>
+
+<script>
+const L=['A','B','C','D'];
+const SCENE_LV=6;
+const GC=['#FFADAD','#FFD6A5','#FDFFB6','#CAFFBF','#9BF6FF','#B197FC'];
+const fmt=s=>s.replace(/[，。]/g,m=>'<span class="pb">'+m+'</span>');
+const mc=(s,q,o,a,e)=>({t:'mc',s,q,o,a,e});
+const adjq=(s,o,n)=>({t:'mc',s,q:'哪一個形容詞最合適？',o,a:0,e:o[0]+'的'+n+'最合適，其他詞語不能形容'+n+'。'});
+const pos=(seg,adj,a)=>({t:'pos',seg,adj,a});
+const ord=(str)=>({t:'ord',tk:str.split('|').map(x=>{const i=x.lastIndexOf(':');return [x.slice(0,i),x.slice(i+1)];})});
+const tf=(s,claim,a,e)=>({t:'tf',s,claim,a,e});
+const scene=o=>Object.assign({t:'scene'},o);
+const CLS={t:'c0',p:'c1',l:'c2',e:'c3'};
+const LAB={t:'時間',p:'人物',l:'地點',e:'事情',a:'形容詞'};
+function labOf(tk){return tk[1]==='u'?(tk[0]==='，'?'逗號':'句號'):LAB[tk[1]];}
+const CATS=[['t','時間','甚麼時候？'],['p','人物','誰？'],['l','地點','在哪裏？'],['e','事情','做甚麼？']];
+const COL={t:'#E03131',p:'#1C7ED6',l:'#2F9E44',e:'#F76707',a:'#7048E8'};
+const TINT={t:'#FFE3E3',p:'#D0EBFF',l:'#D3F9D8',e:'#FFE8CC',a:'#EDE7FF'};
+
+const LEVELS=[
+{name:'關卡 1：四素偵探',icon:'🔍',color:'#FFADAD',desc:'找出時間、人物、地點、事情',hint:'想一想：甚麼時候？誰？在哪裏？做甚麼？',qs:[
+ mc('放學後，小明在家裏玩積木。','哪一部分是時間？',['放學後','小明','在家裏'],0,'放學後回答甚麼時候，所以是時間。'),
+ mc('中午，媽媽在廚房煮飯。','哪一部分是人物？',['中午','媽媽','煮飯'],1,'媽媽回答誰，所以是人物。'),
+ mc('星期日，哥哥在公園踢足球。','哪一部分是地點？',['星期日','哥哥','在公園'],2,'在公園回答在哪裏，所以是地點。'),
+ mc('小息時，同學們在操場跳繩。','哪一部分是事情？',['小息時','同學們','跳繩'],2,'跳繩回答做甚麼，所以是事情。'),
+ mc('晚上，爸爸在客廳看報紙。','哪一部分是時間？',['爸爸','晚上','在客廳'],1,'晚上回答甚麼時候，所以是時間。'),
+ mc('下午，姐姐在泳池游泳。','哪一部分是地點？',['在泳池','下午','游泳'],0,'在泳池回答在哪裏，所以是地點。'),
+ mc('我們在海邊玩沙。','這句缺少哪一項？',['時間','人物','事情'],0,'句子由人物開始，沒有交代甚麼時候，所以缺少時間。'),
+ mc('早上，在操場做早操。','這句缺少哪一項？',['時間','人物','地點'],1,'時間後面應有人物，但句中沒有說是誰，所以缺少人物。'),
+ mc('星期日，哥哥踢足球。','這句缺少哪一項？',['地點','時間','事情'],0,'人物後面沒有交代在哪裏，所以缺少地點。'),
+ mc('小息時，同學們在操場。','這句缺少哪一項？',['人物','事情','地點'],1,'句子最後沒有說做甚麼，所以缺少事情。')
+]},
+{name:'關卡 2：詞語配對王',icon:'🎨',color:'#FFD6A5',desc:'選出合適的形容詞',hint:'想一想：哪個詞語可以形容後面的名詞？',qs:[
+ adjq('中午，媽媽在廚房煮了一碗＿＿的湯。',['熱騰騰','勇敢','吵鬧'],'湯'),
+ adjq('放學後，小明在書桌前玩一副＿＿的拼圖。',['彩色','冰凍','苦'],'拼圖'),
+ adjq('星期六，姐姐在公園見到一隻＿＿的蝴蝶。',['細小','好吃','沉重'],'蝴蝶'),
+ adjq('下午，我在草地上玩一個＿＿的皮球。',['圓圓','開心','香甜'],'皮球'),
+ adjq('晚上，爸爸在家具店買了一張＿＿的沙發。',['柔軟','勇敢','清脆'],'沙發'),
+ adjq('星期日，爺爺在花園看見一棵＿＿的大樹。',['高高','好聽','甜甜'],'大樹'),
+ adjq('中午，哥哥在餐廳吃了一塊＿＿的蛋糕。',['甜甜','響亮','高興'],'蛋糕'),
+ adjq('早上，弟弟在窗邊看見一隻＿＿的小鳥。',['黃色','好吃','沉重'],'小鳥'),
+ adjq('上課時，老師在課室拿出一張＿＿的地圖。',['大大','熱','高興'],'地圖'),
+ adjq('下午，我在公園喝了一杯＿＿的水。',['冰凍','紅色','快樂'],'水')
+]},
+{name:'關卡 3：位置大挑戰',icon:'📍',color:'#CAFFBF',desc:'形容詞要放在哪裏？',hint:'想一想：形容詞要放在它形容的名詞前面。',qs:[
+ pos(['放學後，哥哥','在家裏','看一本','漫畫書。'],'好看的',2),
+ pos(['晚上，媽媽','在廚房煮','一碗','粥。'],'香噴噴的',2),
+ pos(['星期日，爸爸在公園','看見','一隻','小鳥。'],'白色的',2),
+ pos(['小息時，弟弟在操場踢','一個','足球','。'],'新的',1),
+ pos(['放學後，姐姐在家裏吃','一個','橙','。'],'大大的',1),
+ pos(['中午，我在飯堂','喝','一杯','牛奶。'],'熱熱的',2),
+ pos(['今天，小明在文具店買','一枝','鉛筆','。'],'長長的',1),
+ pos(['夏天，妹妹在家裏穿着','一對','鞋','。'],'白色的',1),
+ pos(['星期六，我們在海邊','看見','海水','。'],'藍色的',1),
+ pos(['晚上，哥哥在天台看見','一顆','星星','。'],'亮亮的',1)
+]},
+{name:'關卡 4：重組句子',icon:'🧩',color:'#9BF6FF',desc:'把詞語、形容詞、逗號和句號排好',hint:'想一想：時間，人物地點事情。形容詞放在它形容的名詞前面。',qs:[
+ ord('放學後:t|，:u|小明:p|在操場:l|踢足球:e|。:u'),
+ ord('星期六:t|，:u|爸爸:p|在海灘:l|堆沙堡:e|。:u'),
+ ord('下午:t|，:u|哥哥:p|在球場:l|打籃球:e|。:u'),
+ ord('晚上:t|，:u|奶奶:p|在客廳:l|看電視:e|。:u'),
+ ord('午飯後:t|，:u|同學們:p|在草地上:l|玩遊戲:e|。:u'),
+ ord('星期日:t|，:u|勇敢的:a|哥哥:p|在泳池:l|學游泳:e|。:u'),
+ ord('中午:t|，:u|疲倦的:a|爸爸:p|在餐廳:l|吃一碗:e|熱熱的:a|麵:e|。:u'),
+ ord('放學後:t|，:u|細心的:a|姐姐:p|在書房:l|畫一幅:e|彩色的:a|圖畫:e|。:u'),
+ ord('下午:t|，:u|開心的:a|妹妹:p|在公園:l|放風箏:e|。:u'),
+ ord('星期六:t|，:u|哥哥:p|在:l|寬闊的:a|球場:l|踢足球:e|。:u'),
+ ord('晚上:t|，:u|奶奶:p|在廚房:l|煮一碗:e|香噴噴的:a|粥:e|。:u'),
+ ord('傍晚:t|，:u|強壯的:a|爸爸:p|在:l|熱鬧的:a|商場:l|買了一件:e|新的:a|衣服:e|。:u'),
+ ord('夏天:t|，:u|聰明的:a|姐姐:p|在:l|乾淨的:a|廚房:l|做一個:e|好吃的:a|蛋糕:e|。:u')
+]},
+{name:'關卡 5：是非題大賽',icon:'⭕',color:'#FDFFB6',desc:'判斷句子說得對不對',hint:'再讀一次句子，逐項檢查：時間、人物、地點、事情。',qs:[
+ tf('星期六，哥哥在公園放風箏。','這句有時間、人物、地點和事情。',true,'星期六是時間，哥哥是人物，在公園是地點，放風箏是事情，四項齊全。'),
+ tf('媽媽在廚房煮飯。','這句有時間、人物、地點和事情。',false,'句子沒有交代甚麼時候，缺少時間。'),
+ tf('放學後，小明玩積木。','這句缺少地點。',true,'人物後面沒有說在哪裏，所以缺少地點。'),
+ tf('午飯後，同學們在飯堂。','這句缺少事情。',true,'句子最後沒有說做甚麼，所以缺少事情。'),
+ tf('晚上，爸爸在客廳看報紙。','「晚上」是人物。',false,'晚上回答甚麼時候，是時間。'),
+ tf('下午，姐姐在圖書館看書。','「在圖書館」是地點。',true,'在圖書館回答在哪裏，是地點。'),
+ tf('小息時，弟弟在課室吃一個美味的麵包。','「美味的」形容弟弟。',false,'美味的放在麵包前面，形容麵包（事情）。'),
+ tf('星期日，活潑的弟弟在操場跳繩。','「活潑的」放在人物前面，形容弟弟。',true,'活潑的在弟弟前面，形容人物。'),
+ tf('早上，妹妹在公園看見一隻可愛的小狗。','形容詞要放在名詞前面：可愛的小狗。',true,'可愛的放在小狗前面，位置正確。'),
+ tf('午飯後，媽媽在廚房切一個西瓜香甜的。','這句的形容詞放對了位置。',false,'形容詞要放在名詞前面，應該是香甜的西瓜。'),
+ tf('晚上，爸爸在客廳看報紙。','句子的次序是：時間，人物地點事情。',true,'晚上（時間），爸爸（人物）在客廳（地點）看報紙（事情）。')
+]},
+{name:'關卡 6：超級延伸',icon:'🚀',color:'#B197FC',desc:'形容人物、地點和事情',hint:'想一想：形容的是誰、哪裏，還是做的事情？',qs:[
+ pos(['放學後，','弟弟','在家裏','玩積木。'],'乖巧的',0),
+ pos(['中午，同學們在','飯堂','吃飯','。'],'熱鬧的',0),
+ mc('小息時，活潑的同學們在操場跳繩。','活潑的形容哪一項？',['小息時','同學們','操場'],1,'活潑的放在同學們前面，形容人物。'),
+ mc('下午，老師在寬敞的課室派功課。','寬敞的形容哪一項？',['老師','課室','功課'],1,'寬敞的放在課室前面，形容地點。'),
+ mc('放學後，勤力的哥哥在安靜的書房做一份簡單的功課。','勤力的、安靜的、簡單的，分別形容哪一項？',['哥哥、書房、功課','書房、哥哥、功課','功課、書房、哥哥'],0,'勤力形容哥哥（人物），安靜形容書房（地點），簡單形容功課（事情）。'),
+ mc('','哪一句在人物、地點、事情前都有形容詞？',['星期六，快樂的小明在大大的操場踢足球。','星期六，快樂的小明在大大的操場踢一個新的足球。','星期六，小明在操場踢一個新的足球。'],1,'第二句有快樂的（人物）、大大的（地點）和新的（事情）。')
+]},
+{name:'關卡 7：圖畫小劇場',icon:'🖼️',color:'#FFC9DE',desc:'看圖，一步一步砌句子（可選組別）',hint:'看圖想一想：甚麼時候？誰？在哪裏？做甚麼？',picker:true,qs:[
+ scene({img:'group1_sister_balloon.png',tm:'早上',pr:'妹妹',pl:['在','街道上'],ev:['看見一個','氣球'],ap:'乖巧的',al:'熱鬧的',ae:'色彩繽紛的',dis:'美味的'}),
+ scene({img:'group2_sister_library.png',tm:'下午',pr:'姐姐',pl:['在','圖書館'],ev:['閱讀一本','故事書'],ap:'勤力的',al:'安靜的',ae:'有趣的',dis:'冰凍的'}),
+ scene({img:'group3_brother_sandwich.png',tm:'小息時',pr:'弟弟',pl:['在','課室'],ev:['吃一件','三明治'],ap:'肚子餓的',al:'空無一人的',ae:'美味的',dis:'涼快的'}),
+ scene({img:'group4_sister_dress.png',tm:'昨天',pr:'姐姐',pl:['在','商場裏'],ev:['買了一條','裙子'],ap:'又高又瘦的',al:'大大的',ae:'漂亮的',dis:'吵鬧的'}),
+ scene({img:'group5_grandpa_moon.png',tm:'晚上',pr:'爺爺',pl:['在','公園'],ev:['觀賞','月亮'],ap:'胖胖的',al:'涼快的',ae:'又大又圓的',dis:'美味的'}),
+ scene({img:'group6_mom_fruit.png',tm:'星期日',pr:'媽媽',pl:['在','超級市場'],ev:['買了一袋','水果'],ap:'溫柔的',al:'明亮的',ae:'新鮮的',dis:'吵鬧的'})
+]}
+];
+
+let AC=null,muted=false;
+function ac(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();}if(AC.state==='suspended')AC.resume();return AC;}
+function tone(f,t,d,type,v){if(muted)return;try{const c=ac();const o=c.createOscillator(),g=c.createGain();o.type=type||'sine';const s=c.currentTime+t;o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(v||0.25,s+0.02);g.gain.exponentialRampToValueAtTime(0.0001,s+d);o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+d+0.05);}catch(e){}}
+const sfx={
+ ok(){[523,659,784,1047].forEach((f,i)=>tone(f,i*0.09,0.25,'triangle',0.28));},
+ ding(){tone(784,0,0.15,'triangle',0.25);tone(1047,0.1,0.25,'triangle',0.25);},
+ bad(){tone(220,0,0.18,'sawtooth',0.18);tone(165,0.16,0.3,'sawtooth',0.18);},
+ click(){tone(700,0,0.06,'square',0.1);},
+ tick(){tone(900,0,0.04,'square',0.08);},
+ win(){[523,659,784,659,784,1047,1319].forEach((f,i)=>tone(f,i*0.12,0.3,'triangle',0.3));}
+};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const $=id=>document.getElementById(id);
+let curLv=0,Q=[],idx=0,score=0,st=null,results=[];
+
+function buildLevels(){
+ $('levels').innerHTML=LEVELS.map((l,i)=>`<div class="lv" style="background:${l.color}" onclick="startLevel(${i})"><div class="ic">${l.icon}</div><div class="nm">${l.name}</div><div class="ds">${l.desc}</div></div>`).join('');
+}
+function setMute(){muted=!muted;$('muteBtn').textContent=muted?'🔇 聲效：關':'🔊 聲效：開';$('muteBtn2').textContent=muted?'🔇':'🔊';if(!muted)sfx.click();}
+$('muteBtn').onclick=setMute;$('muteBtn2').onclick=setMute;
+
+function show(id){['home','game','end'].forEach(x=>$(x).classList.toggle('hide',x!==id));}
+function goHome(){sfx.click();$('switchBtn').classList.add('hide');show('home');}
+function startLevel(i){
+ ac();sfx.click();curLv=i;
+ $('lvname').textContent=LEVELS[i].name;$('lvname').style.background=LEVELS[i].color;
+ if(LEVELS[i].picker){showScenePicker();return;}
+ $('switchBtn').classList.add('hide');
+ const n=parseInt($('cnt').value,10);
+ Q=shuffle(LEVELS[i].qs).slice(0,n);idx=0;score=0;results=[];
+ show('game');renderQ();
+}
+function showScenePicker(){
+ ac();sfx.click();curLv=SCENE_LV;
+ $('lvname').textContent=LEVELS[SCENE_LV].name;$('lvname').style.background=LEVELS[SCENE_LV].color;
+ $('switchBtn').classList.add('hide');$('dots').innerHTML='';$('qno').textContent='請選擇組別';
+ $('fb').className='fb';$('nextBtn').classList.add('hide');
+ const qs=LEVELS[SCENE_LV].qs;
+ let h='<div class="qtext" style="text-align:center">你想做哪一組？</div><div class="gpicks">';
+ qs.forEach((q,g)=>{h+=`<div class="gpick" style="background:${GC[g]}" onclick="startScene(${g})"><img src="${q.img}" alt="" onerror="this.style.display='none'"><div class="gn">第 ${g+1} 組</div></div>`;});
+ h+=`</div><div class="nextrow"><button class="btn green" onclick="startScene('all')">▶ 六組按次序全部做</button> <button class="btn pink" onclick="startScene('rand')">🎲 隨機抽題（按每關題數）</button></div>`;
+ $('qarea').innerHTML=h;
+ show('game');
+}
+function startScene(g){
+ ac();sfx.click();const qs=LEVELS[SCENE_LV].qs;
+ if(g==='all')Q=qs.slice();
+ else if(g==='rand')Q=shuffle(qs).slice(0,parseInt($('cnt').value,10));
+ else Q=[qs[g]];
+ curLv=SCENE_LV;idx=0;score=0;results=[];
+ $('switchBtn').classList.remove('hide');
+ renderQ();
+}
+function renderDots(){
+ $('dots').innerHTML=Q.map((q,i)=>`<div class="dot ${i===idx?'now':''} ${results[i]===1?'ok':results[i]===0?'no':''}"></div>`).join('');
+}
+function renderQ(){
+ const q=Q[idx];
+ st={q,tried:false,done:false};
+ $('qno').textContent='第 '+(idx+1)+' / '+Q.length+' 題';
+ renderDots();$('fb').className='fb';$('nextBtn').classList.add('hide');
+ let h='';
+ if(q.t==='mc'){
+  st.order=shuffle(q.o.map((_,i)=>i));
+  if(q.s)h+=`<div class="sent">${fmt(q.s)}</div>`;
+  h+=`<div class="qtext">${q.q}</div><div class="opts">`;
+  st.order.forEach((r,k)=>{h+=`<div class="opt" id="opt${k}" onclick="pickMC(${k})"><span class="lt">${L[k]}</span><span>${q.o[r]}</span></div>`;});
+  h+='</div>';
+ }else if(q.t==='pos'){
+  h+=`<div style="text-align:center"><div class="adjpill">請把「${q.adj}」放在正確位置</div></div><div class="sent">`;
+  q.seg.forEach((s,i)=>{h+=`<span>${fmt(s)}</span>`;if(i<q.seg.length-1)h+=`<button class="slot" id="slot${i}" onclick="pickPos(${i})">${L[i]}</button>`;});
+  h+='</div>';
+ }else if(q.t==='tf'){
+  h+=`<div class="sent">${fmt(q.s)}</div><div class="qtext">${q.claim}</div><div class="opts"><div class="opt" id="tf0" style="background:#7AE582" onclick="pickTF(0)"><span class="lt">A</span><span>對 ✔</span></div><div class="opt" id="tf1" style="background:#FF8FA3" onclick="pickTF(1)"><span class="lt">B</span><span>錯 ✘</span></div></div>`;
+ }else if(q.t==='ord'){
+  let p=shuffle(q.tk.map((_,i)=>i));
+  while(p.every((v,i)=>v===i))p=shuffle(p);
+  st.tk=q.tk;st.pool=p;st.slots=q.tk.map(()=>null);st.hint=false;st.wrong=[];
+  drawOrd();return;
+ }else if(q.t==='scene'){
+  st.step=0;st.fill=0;
+  st.pool=shuffle([0,1,2,3]);while(st.pool.every((v,i)=>v===i))st.pool=shuffle(st.pool);
+  st.badTile=null;st.pu={c:null,p:null};st.badgap=[];
+  st.adjPool=shuffle([{txt:q.ap,slot:'p'},{txt:q.al,slot:'l'},{txt:q.ae,slot:'e'},{txt:q.dis,slot:null}]);
+  st.sel=null;st.fillA={};st.badSlot=null;
+  renderScene();return;
+ }
+ $('qarea').innerHTML=h;
+}
+function drawOrd(){
+ const tk=st.tk;
+ let h=`<div class="qtext">把詞語、形容詞、逗號和句號排好，砌成一句通順的句子。</div><div style="text-align:center"><button class="btn gray" onclick="toggleHint()">💡 ${st.hint?'隱藏':'顯示'}四素提示</button></div><div class="slotrow">`;
+ for(let i=0;i<tk.length;i++){
+  const v=st.slots[i];const c=tk[i][1];
+  const cls='oslot'+(c==='u'?' ps':'')+(c==='a'?' as':'')+(v!==null?' f':'')+(st.wrong.indexOf(i)>=0?' bad':'');
+  h+=`<div class="${cls}" onclick="unplace(${i})">${v!==null?tk[v][0]:(st.hint?labOf(tk[i]):(i+1))}${(v!==null&&st.hint)?'<small>'+labOf(tk[i])+'</small>':''}</div>`;
+ }
+ h+='</div><div class="pool">';
+ st.pool.forEach((v,j)=>{const c=tk[v][1];h+=`<div class="tile${c==='u'?' pt':c==='a'?' ad':''}" onclick="place(${j})">${tk[v][0]}</div>`;});
+ h+='</div>';
+ $('qarea').innerHTML=h;
+}
+function toggleHint(){sfx.click();st.hint=!st.hint;drawOrd();}
+function place(j){
+ if(st.done)return;
+ const e=st.slots.indexOf(null);if(e<0)return;
+ sfx.click();st.wrong=[];st.slots[e]=st.pool[j];st.pool.splice(j,1);
+ $('fb').className='fb';
+ if(st.slots.indexOf(null)<0)checkOrd();else drawOrd();
+}
+function unplace(i){
+ if(st.done)return;if(st.slots[i]===null)return;
+ sfx.click();st.pool.push(st.slots[i]);st.slots[i]=null;st.wrong=[];$('fb').className='fb';drawOrd();
+}
+function checkOrd(){
+ const w=[];
+ st.slots.forEach((v,i)=>{if(v!==i)w.push(i);});
+ if(w.length===0){
+  st.done=true;
+  const full=st.tk.map(t=>t[1]==='u'?`<span class="pb">${t[0]}</span>`:t[1]==='a'?`<span class="hl">${t[0]}</span>`:`<span class="${CLS[t[1]]}">${t[0]}</span>`).join('');
+  $('qarea').innerHTML=`<div class="qtext">完成了！</div><div class="sent">${full}</div>`;
+  good('次序是：時間，人物地點事情。形容詞放在它形容的名詞前面。');
+ }else{st.wrong=w;drawOrd();bad();}
+}
+
+/* ---- 關卡 7：看圖一步一步砌句子 ---- */
+function wcard(k,txt,extra){return `<span class="wc ${extra||''}" style="border-color:${COL[k]};background:${TINT[k]};color:${COL[k]}">${txt}</span>`;}
+function ctext(q){return [q.tm,q.pr,q.pl.join(''),q.ev.join('')];}
+function picHTML(f){return `<div class="pic"><img src="${f}" alt="情境圖" onerror="this.parentNode.classList.add('miss')"><div class="missmsg">找不到圖片 ${f}。請把六張情境圖和這個檔案放在同一個資料夾，檔名要相同。</div></div>`;}
+function stepBar(){const n=['① 看圖','② 時人地事','③ 加標點','④ 加形容詞'];return '<div class="steps">'+n.map((x,i)=>`<span class="stp ${i===st.step?'on':(i<st.step?'dn':'')}">${x}</span>`).join('')+'</div>';}
+function sceneGo(n){if(st.done)return;st.step=n;$('fb').className='fb';sfx.click();renderScene();}
+function renderScene(){
+ const q=st.q;const tx=ctext(q);
+ let h=stepBar()+picHTML(q.img);
+ if(st.step===0){
+  h+=`<div class="qtext" style="text-align:center">仔細看圖：甚麼時候？誰？在哪裏？做甚麼？</div><div class="nextrow"><button class="btn green" onclick="sceneGo(1)">開始組句 ➜</button></div>`;
+ }else if(st.step===1){
+  const need=st.fill;
+  h+=`<div class="qtext" style="text-align:center">${need<4?'哪一張卡是「'+CATS[need][1]+'」？（'+CATS[need][2]+'）':'全部找到了！'}</div><div class="slotrow">`;
+  CATS.forEach((c,i)=>{h+=i<need?wcard(c[0],tx[i]):(i===need?wcard(c[0],c[1],'cur'):wcard(c[0],c[1],'dim'));});
+  h+='</div><div class="pool">';
+  st.pool.forEach((k,j)=>{h+=`<div class="tile${st.badTile===k?' wrongt':''}" onclick="pickSceneTile(${j})">${tx[k]}</div>`;});
+  h+='</div>';
+ }else if(st.step===2){
+  const sub=st.pu.c===null?'c':'p';
+  h+=`<div class="qtext" style="text-align:center">請把<span class="pb">${sub==='c'?'，':'。'}</span>放在正確位置（點一下虛線圓圈）</div><div class="sent" style="font-size:clamp(20px,3vw,40px)">`;
+  for(let i=0;i<4;i++){
+   h+=wcard(CATS[i][0],tx[i]);
+   if(st.pu.c===i)h+='<span class="pb">，</span>';
+   else if(st.pu.p===i)h+='<span class="pb">。</span>';
+   else h+=`<button class="gap${st.badgap.indexOf(i)>=0?' bad':''}" onclick="pickGap(${i})">＋</button>`;
+  }
+  h+='</div>';
+ }else{
+  const sl=s=>st.fillA[s]?`<span class="hl" style="font-size:clamp(20px,3vw,38px)">${st.fillA[s]}</span>`:`<button class="aslot${st.badSlot===s?' bad':''}" onclick="pickSlot('${s}')">？</button>`;
+  if(st.step===3){
+   h+=`<div class="qtext" style="text-align:center">先點一張紫色形容詞卡，再點句子裏的「？」，放到正確位置。</div><div class="sent" style="font-size:clamp(20px,3vw,40px)">`;
+   h+=wcard('t',q.tm)+'<span class="pb">，</span>'+sl('p')+wcard('p',q.pr)+wcard('l',q.pl[0])+sl('l')+wcard('l',q.pl[1])+wcard('e',q.ev[0])+sl('e')+wcard('e',q.ev[1])+'<span class="pb">。</span></div><div class="pool">';
+   st.adjPool.forEach((a,j)=>{h+=`<div class="tile ad${st.sel===j?' sel':''}${a.bad?' dead':''}" onclick="pickAdj(${j})">${a.txt}</div>`;});
+   h+='</div>';
+  }else{
+   h+=`<div class="qtext" style="text-align:center">完成了！</div><div class="sent" style="font-size:clamp(20px,3vw,40px)">`;
+   h+=wcard('t',q.tm)+'<span class="pb">，</span>'+`<span class="hl">${q.ap}</span>`+wcard('p',q.pr)+wcard('l',q.pl[0])+`<span class="hl">${q.al}</span>`+wcard('l',q.pl[1])+wcard('e',q.ev[0])+`<span class="hl">${q.ae}</span>`+wcard('e',q.ev[1])+'<span class="pb">。</span></div>';
+  }
+ }
+ $('qarea').innerHTML=h;
+}
+function pickSceneTile(j){
+ if(st.done||st.step!==1)return;
+ const k=st.pool[j];
+ if(k===st.fill){
+  st.pool.splice(j,1);st.fill++;st.badTile=null;$('fb').className='fb';sfx.ding();
+  renderScene();
+  if(st.fill===4)setTimeout(()=>sceneGo(2),700);
+ }else{
+  st.badTile=k;bad('想一想：「'+CATS[st.fill][1]+'」回答「'+CATS[st.fill][2]+'」');renderScene();
+ }
+}
+function pickGap(i){
+ if(st.done||st.step!==2)return;
+ const sub=st.pu.c===null?'c':'p';const right=sub==='c'?0:3;
+ if(i===right){
+  if(sub==='c')st.pu.c=i;else st.pu.p=i;
+  st.badgap=[];$('fb').className='fb';sfx.ding();renderScene();
+  if(st.pu.p!==null)setTimeout(()=>sceneGo(3),700);
+ }else{
+  st.badgap.push(i);bad(sub==='c'?'逗號放在時間後面。':'句號放在整句的最後。');renderScene();
+ }
+}
+function pickAdj(j){
+ if(st.done||st.step!==3)return;
+ if(st.adjPool[j].bad)return;
+ st.sel=j;sfx.click();renderScene();
+}
+function pickSlot(s){
+ if(st.done||st.step!==3||st.fillA[s])return;
+ if(st.sel===null){const fb=$('fb');fb.className='fb no';fb.innerHTML='先點選一張紫色形容詞卡，再點選句子裏的「？」。';return;}
+ const tile=st.adjPool[st.sel];
+ if(tile.slot===s){
+  st.fillA[s]=tile.txt;st.adjPool.splice(st.sel,1);st.sel=null;st.badSlot=null;$('fb').className='fb';sfx.ding();
+  if(Object.keys(st.fillA).length===3){finishScene();}else renderScene();
+ }else{
+  st.badSlot=s;
+  if(tile.slot===null){tile.bad=true;st.sel=null;bad('「'+tile.txt+'」不適合這個句子，想想哪一個詞語能形容人物、地點或事情。');}
+  else bad('這個形容詞不是形容這裏的，想一想它形容誰、哪裏，還是做的事情。');
+  renderScene();
+ }
+}
+function finishScene(){
+ st.step=4;renderScene();
+ good('「'+st.q.dis+'」不適合這個句子，所以不用。次序是：時間，人物地點事情。');
+}
+
+function good(extra){
+ st.done=true;results[idx]=st.tried?0:1;if(!st.tried)score++;
+ sfx.ok();burst(14);
+ const praise=['答對了！好棒！','太厲害了！','正確！繼續加油！','好眼力！','做得好！'];
+ const fb=$('fb');fb.className='fb ok';
+ fb.innerHTML=praise[Math.floor(Math.random()*praise.length)]+(st.tried?'（修正成功！）':'')+`<small>${extra}</small>`;
+ renderDots();$('nextBtn').classList.remove('hide');
+ $('nextBtn').textContent=idx===Q.length-1?'看結果 🏆':'下一題 ➜';
+}
+function bad(msg){
+ st.tried=true;sfx.bad();
+ const fb=$('fb');fb.className='fb no';
+ fb.innerHTML='再想一想，試多一次！<small>提示：'+(msg||LEVELS[curLv].hint)+'</small>';
+}
+function pickMC(k){
+ if(st.done)return;const q=st.q;const el=$('opt'+k);if(el.classList.contains('bad'))return;
+ if(st.order[k]===q.a){el.classList.add('good');good(q.e);}
+ else{el.classList.add('bad');bad();}
+}
+function pickTF(k){
+ if(st.done)return;const q=st.q;const el=$('tf'+k);if(el.classList.contains('bad'))return;
+ if((k===0)===q.a){el.classList.add('good');good(q.e);}
+ else{el.classList.add('bad');bad();}
+}
+function pickPos(i){
+ if(st.done)return;const q=st.q;const el=$('slot'+i);if(el.classList.contains('bad'))return;
+ if(i===q.a){
+  const full=q.seg.slice(0,q.a+1).map(fmt).join('')+`<span class="hl">${q.adj}</span>`+q.seg.slice(q.a+1).map(fmt).join('');
+  $('qarea').innerHTML=`<div style="text-align:center"><div class="adjpill">「${q.adj}」</div></div><div class="sent">${full}</div>`;
+  good('形容詞放在它形容的名詞前面。');
+ }else{el.classList.add('bad');bad();}
+}
+function nextQ(){
+ sfx.click();
+ if(idx<Q.length-1){idx++;renderQ();}else{finish();}
+}
+function finish(){
+ const n=Q.length;const r=score/n;const stars=r>=0.9?3:r>=0.6?2:1;
+ $('stars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+ $('endtxt').textContent=LEVELS[curLv].name+' 完成！';
+ $('endscore').textContent='一次答對：'+score+' / '+n;
+ $('switchBtn').classList.add('hide');
+ show('end');sfx.win();burst(40);
+}
+function burst(n){
+ const em=['🎉','⭐','🌟','✨','🎈','💖','🍀'];
+ for(let i=0;i<n;i++){const s=document.createElement('div');s.className='fall';s.textContent=em[Math.floor(Math.random()*em.length)];s.style.left=Math.random()*100+'vw';s.style.animationDuration=(2+Math.random()*2)+'s';s.style.animationDelay=(Math.random()*0.5)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),4600);}
+}
+let pickTimer=null;
+function pickStudent(){
+ ac();const max=Math.max(2,parseInt($('pmax').value,10)||18);
+ $('pickov').classList.add('on');let c=0;clearInterval(pickTimer);
+ pickTimer=setInterval(()=>{$('picknum').textContent=1+Math.floor(Math.random()*max);sfx.tick();c++;
+  if(c>=18){clearInterval(pickTimer);$('picknum').textContent=1+Math.floor(Math.random()*max);sfx.ok();}},70);
+}
+function closePick(){clearInterval(pickTimer);$('pickov').classList.remove('on');}
+document.addEventListener('keydown',e=>{
+ if($('game').classList.contains('hide')||!st)return;
+ const k=e.key.toLowerCase();
+ if((k===' '||k==='enter')&&!$('nextBtn').classList.contains('hide')){e.preventDefault();nextQ();return;}
+ const m={a:0,b:1,c:2,d:3}[k];
+ if(m===undefined)return;
+ const t=st.q.t;
+ if(t==='mc'){if(m<st.q.o.length)pickMC(m);}
+ else if(t==='pos'){if(m<st.q.seg.length-1)pickPos(m);}
+ else if(t==='tf'){if(m<2)pickTF(m);}
+});
+buildLevels();
+</script>
+</body>
+</html>
